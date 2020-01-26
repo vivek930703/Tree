@@ -1,0 +1,37 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+int count_even(int num,int N)
+{
+    int level_diff = int(log2(N)) - int(log2(num));
+    int res = (num & 1) ? 0 : 1;
+    for(int i = 1; i < level_diff; i++)
+    {
+        if( (num * (1 << i)) <= N ) {
+            res = res + (1 << (i-1) );
+        }
+    }
+    int last_level_num = num * (1 << level_diff);
+    if( N >= last_level_num && level_diff >= 1) 
+    {
+        int extra_number = N - last_level_num + 1;
+        if( extra_number < (1 << level_diff) ) {
+            res = res + (extra_number + 1) / 2;
+        }
+        else {
+            res = res + (1 << (level_diff - 1) );
+        }
+    }
+    return res;
+}
+
+int main() {
+	int n,q;
+	cin >> n >> q;
+	int arr[q];
+	for(int i = 0; i < q; i++) {
+	    cin >> arr[i];
+	    cout << count_even(arr[i],n) <<"\n";
+	}
+	return 0;
+}
